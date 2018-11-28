@@ -98,10 +98,32 @@ namespace WebApplication15.Controllers
         [HttpPost]
         public ActionResult Addprescription( Addprescriptionviewmodel mod)
         {
-           
-            
+            try
+            {
+                hospital_managementEntities db = new hospital_managementEntities();
+                Patient_Prescription a = new Patient_Prescription();
+                foreach (Register R in db.Registers)
+                {
+                    if (R.id == mod.PatientId)
+                    {
+                       a.Registerid = mod.PatientId;
+                        a.Medicine = mod.Medicine;
+                        a.Duration = mod.Duration;
+                        a.Morning = mod.Morning;
+                        a.Noon = mod.Noon;
+                        a.Evening = mod.Evening;
+                        db.Patient_Prescription.Add(a);
+                        db.SaveChanges();
+                        return RedirectToAction("AddHistory", "Doctor");
 
+
+                    }
+                }
+            }
+            catch (Exception e) { return View(); }
+            return View();
         }
+
 
         public ActionResult checkdetails()
         {
